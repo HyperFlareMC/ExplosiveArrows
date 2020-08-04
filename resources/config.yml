@@ -1,0 +1,2 @@
+# Default is 10, change this for a bigger/smaller explosion
+explosion-radius: 10
