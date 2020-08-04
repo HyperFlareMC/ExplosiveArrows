@@ -12,13 +12,21 @@ use pocketmine\plugin\PluginBase;
 
 class ExplosiveArrows extends PluginBase implements Listener{
 
+    /**
+     * @var array|mixed[]
+     */
+    private static $config;
+    
     public function onEnable() : void{
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        $this->getServer()->getLogger()->info("Explosive Arrows have been enabled, be careful out there, soldier.");
+        self::$config = $this->getConfig()->getAll();
     }
 
     public function onProjectileHit(ProjectileHitEvent $event) {
-        $explosion = new Explosion($event->getEntity()->getPosition(), 10);
+        $explosion = new Explosion($event->getEntity()->getPosition(), self::$config["explosion-radius"]);
+        if(!is_int(self::$config["explosion-radius"])){
+            throw new \RuntimeException("explosion-radius must return an int");
+        }
         $event->getEntity()->kill();
         $explosion->explodeA();
         $explosion->explodeB();
