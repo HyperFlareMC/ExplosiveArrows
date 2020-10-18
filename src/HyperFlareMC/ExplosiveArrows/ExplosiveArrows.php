@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HyperFlareMC\ExplosiveArrows;
 
+use pocketmine\entity\projectile\Arrow;
 use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\Listener;
 use pocketmine\level\Explosion;
@@ -28,6 +29,9 @@ class ExplosiveArrows extends PluginBase implements Listener{
         }
         if($radius > 50 || $radius < 1){
             throw new \RuntimeException("explosion-radius must be between values 1 and 50");
+        }
+        if(!$event->getEntity() instanceof Arrow){
+            return;
         }
         $explosion = new Explosion($event->getEntity()->getPosition(), $radius);
         $event->getEntity()->kill();
